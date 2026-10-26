@@ -11,3 +11,7 @@ Static site for Azorian. No build step, no framework. Open `index.html` or serve
 Contact and newsletter forms post to FormSubmit; the destination address is `FORM_EMAIL` at the top of `assets/js/site.js`.
 
 To edit copy, change `index.tpl.html` and run `python3 build.py`.
+
+
+## Redesign (Oct 2026)
+`index.tpl.html` + `build.py` render `index.html`. Styles in `assets/css/v2.css`; motion in `assets/js/storm.js` (hero storm to chart), `assets/js/v2.js` (nav, counters, forms, embeds) and `assets/js/motion.js` (heading decode, 3D tilt, dividers, cursor glow). `legacy/index.tpl.html` is the faithful Wix copy; `terms-of-use/` still uses `assets/css/site.css`.

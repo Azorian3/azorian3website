@@ -54,22 +54,29 @@
         <a class="btn btn-glow" href="#spend-reports">See the numbers <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
         <a class="btn btn-glass" href="#contact">Book a discovery call</a>
       </div>
-      <div class="clocks">
       <div class="leak">
         <span class="live"><i></i>Live</span>
         <span class="lk">Leaked since you opened this page</span>
         <span class="mono big" id="costTick">$0.00</span>
         <span class="lk small">A $2B spend base loses about 0.6 percent a year. 38 cents a second, every second.*</span>
       </div>
-      <div class="leak doom">
-        <span class="live"><i></i>Deadline</span>
-        <span class="lk">Clean, automated master data, or out of business</span>
-        <span class="mono big dm" id="doomTick">000d 00:00:00</span>
-        <span class="lk small">Aggregate it, cleanse it, automate everything that can be automated by <b id="doomDate"></b>. Companies that miss that date are not competing, they are closing.</span>
-      </div>
-      </div>
     </div>
     <div class="hchart" aria-hidden="true"><div class="bigmark">{{MARK}}</div></div>
+  </div>
+  <div class="doomband" role="region" aria-label="Master data deadline">
+    <div class="wrap">
+      <div class="db-head">
+        <span class="live"><i></i>Deadline</span>
+        <h3>Clean, automated master data by <b id="doomDate"></b>, or out of business.</h3>
+        <p>Aggregate it. Cleanse it. Automate everything that can be automated. Companies that miss the date are not competing, they are closing.</p>
+      </div>
+      <div class="db-clock" id="doomTick" aria-live="off">
+        <div class="seg"><span class="n" data-u="d">000</span><span class="u">Days</span></div><i>:</i>
+        <div class="seg"><span class="n" data-u="h">00</span><span class="u">Hours</span></div><i>:</i>
+        <div class="seg"><span class="n" data-u="m">00</span><span class="u">Minutes</span></div><i>:</i>
+        <div class="seg"><span class="n" data-u="s">00</span><span class="u">Seconds</span></div>
+      </div>
+    </div>
   </div>
   <button class="replay" type="button" onclick="window.stormReplay()" aria-label="Replay the animation">&#8635; Replay</button>
   <a class="scrollcue" href="#mission" aria-label="Scroll down to see how we do it"><span>Scroll to see how</span><i></i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></a>
@@ -198,10 +205,10 @@
   <div class="wrap">
     <div class="sec-head rv"><div><div class="eyebrow">The team</div><h2>Four disciplines. One table.</h2></div><p>Nobody on the team is a generalist. Every engagement gets all four: Source-to-Pay leadership, operations and analytics, the IT practice that secures it, and 30 years of regulated statistics behind the numbers.</p></div>
     <div class="people">
-      <article class="person rv"><div class="av">JC</div><h3>James F. Canfield IV</h3><div class="role">Chief Executive Officer</div><p>Source-to-Pay leadership from analyst to senior director inside Fortune 500 and private-equity-backed companies. Built a global indirect procurement organization from nothing; eight-figure savings in year one.</p><div class="tags"><span>Spend analytics</span><span>Zero-Touch AP</span><span>Speaker</span></div></article>
-      <article class="person rv d1"><div class="av">JM</div><h3>Jake M. Martinko</h3><div class="role">Chief Operating Officer</div><p>Procurement and supply-chain operations from U.S. Navy Supply Corps logistics to procurement excellence in specialty chemicals. Validates every KPI and signs the numbers before a client sees them.</p><div class="tags"><span>Operations</span><span>KPI validation</span><span>Navy Supply Corps</span></div></article>
-      <article class="person rv d2"><div class="av">JB</div><h3>Justin M. Boynton</h3><div class="role">Chief Information Officer</div><p>Designs, runs and secures infrastructure for healthcare, industrial, financial, legal, education and non-profit organizations. Own data center, so client data is handled by people who secure networks for a living.</p><div class="tags"><span>Infrastructure</span><span>Cyber</span><span>Private cloud</span></div></article>
-      <article class="person rv d3"><div class="av">LM</div><h3>Lawrence Marinucci</h3><div class="role">Advisor, Statistics</div><p>30 years as a clinical trials statistician at a publicly traded biopharma, now in private consulting. Brings the rigor of regulated statistics to spend models, sampling and the validation of every savings claim.</p><div class="tags"><span>30 yrs statistics</span><span>Validation</span><span>Biopharma</span></div></article>
+      <article class="person rv"><div class="av">CEO</div><h3>Chief Executive Officer</h3><div class="role">Source-to-Pay</div><p>Source-to-Pay leadership from analyst to senior director inside Fortune 500 and private-equity-backed companies. Built a global indirect procurement organization from nothing; eight-figure savings in year one.</p><div class="tags"><span>Spend analytics</span><span>Zero-Touch AP</span><span>Speaker</span></div></article>
+      <article class="person rv d1"><div class="av">COO</div><h3>Chief Operating Officer</h3><div class="role">Procurement operations</div><p>Procurement and supply-chain operations from U.S. Navy Supply Corps logistics to procurement excellence in specialty chemicals. Validates every KPI and signs the numbers before a client sees them.</p><div class="tags"><span>Operations</span><span>KPI validation</span><span>Navy Supply Corps</span></div></article>
+      <article class="person rv d2"><div class="av">CIO</div><h3>Chief Information Officer</h3><div class="role">Infrastructure and security</div><p>Designs, runs and secures infrastructure for healthcare, industrial, financial, legal, education and non-profit organizations. Own data center, so client data is handled by people who secure networks for a living.</p><div class="tags"><span>Infrastructure</span><span>Cyber</span><span>Private cloud</span></div></article>
+      <article class="person rv d3"><div class="av">ADV</div><h3>Advisor, Statistics</h3><div class="role">Clinical trials statistician</div><p>30 years as a clinical trials statistician at a publicly traded biopharma, now in private consulting. Brings the rigor of regulated statistics to spend models, sampling and the validation of every savings claim.</p><div class="tags"><span>30 yrs statistics</span><span>Validation</span><span>Biopharma</span></div></article>
     </div>
   </div>
 </section>

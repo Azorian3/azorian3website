@@ -79,19 +79,11 @@
         <a class="btn btn-glow" href="#spend-reports">See the numbers <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
         <a class="btn btn-glass" href="#contact">Book a discovery call</a>
       </div>
-      <div class="clocks">
       <div class="leak">
         <span class="live"><i></i>Live</span>
         <span class="lk">Leaked since you opened this page</span>
         <span class="mono big" id="costTick">$0.00</span>
         <span class="lk small">A $2B spend base loses about 0.6 percent a year. 38 cents a second, every second.*</span>
-      </div>
-      <div class="leak doom">
-        <span class="live"><i></i>Deadline</span>
-        <span class="lk">Clean, automated master data, or out of business</span>
-        <span class="mono big dm" id="doomTick">000d 00:00:00</span>
-        <span class="lk small">Aggregate it, cleanse it, automate everything that can be automated by <b id="doomDate"></b>. Companies that miss that date are not competing, they are closing.</span>
-      </div>
       </div>
     </div>
     <div class="hchart" aria-hidden="true"><div class="bigmark"><svg class="a3logo a3mark" preserveAspectRatio="xMidYMid meet" viewBox="20 30 290 290" height="340" width="1210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Azorian3 logo">
@@ -120,6 +112,21 @@
         <path class="tag" fill="#B9BDC2" d="M307.942 300.057q-1.463 0-2.707-.504-1.245-.503-2.167-1.415t-1.434-2.128-.513-2.66.513-2.66 1.434-2.128 2.167-1.416 2.707-.503q1.311 0 2.489.418t2.033 1.273l-.228.266q-.912-.874-1.995-1.235t-2.299-.361q-1.368 0-2.546.484-1.178.485-2.052 1.35-.874.864-1.358 2.013t-.485 2.499.485 2.498 1.358 2.014 2.052 1.35 2.546.484q1.216 0 2.299-.37 1.083-.371 1.995-1.245l.228.266q-.855.855-2.033 1.283t-2.489.427m19.019 0q-1.463 0-2.708-.504-1.244-.503-2.166-1.415t-1.434-2.128-.513-2.66.513-2.66 1.434-2.128q.922-.912 2.166-1.416 1.245-.503 2.708-.503t2.707.504 2.166 1.415 1.435 2.128.513 2.66-.513 2.66-1.435 2.128q-.921.912-2.166 1.416t-2.707.503m0-.361q1.368 0 2.546-.475t2.052-1.34 1.358-2.013.485-2.518-.484-2.518-1.359-2.014-2.052-1.339-2.546-.475-2.546.475-2.052 1.34-1.358 2.013-.485 2.518.485 2.517 1.358 2.014 2.052 1.34 2.546.475m16.169.304v-13.3h.323l6.327 11.058h-.171l6.308-11.058h.323V300h-.38v-12.749h.152l-6.213 10.868h-.228l-6.232-10.868h.171V300Zm23.864 0v-13.3h4.503q1.634 0 2.802.523 1.169.522 1.796 1.491t.627 2.356q0 1.368-.627 2.346-.627.979-1.796 1.502-1.168.522-2.802.522h-4.294l.171-.171V300Zm.38-4.769-.171-.152h4.332q2.337 0 3.572-1.055t1.235-2.954q0-1.919-1.235-2.964t-3.572-1.045h-4.332l.171-.152Zm18.81 4.769v-13.3h.38v12.939h7.923V300Zm16.72 0v-13.3h8.569v.361h-8.189v12.578h8.474V300Zm.285-6.574v-.361h7.429v.361ZM419.244 300l5.301-7.03v.304l-4.921-6.574h.475l4.636 6.213h-.114l4.636-6.213h.456l-4.864 6.498v-.152l5.244 6.954h-.475l-5.016-6.669h.114L419.7 300Zm19.551 0v-13.3h.38V300Zm13.623 0v-12.939h-4.94v-.361h10.26v.361h-4.94V300Zm16.701 0v-4.655l.095.285-5.51-8.93h.437l5.244 8.493h-.152l5.244-8.493h.437l-5.51 8.93.095-.285V300Zm24.662 0v-13.3h.38V300Zm11.134 0v-13.3h.323l9.956 12.863h-.209V286.7h.38V300h-.323l-9.956-12.863h.209V300Zm23.693 0v-12.939h-4.94v-.361h10.26v.361h-4.94V300Zm19.038.057q-1.463 0-2.707-.504-1.245-.503-2.166-1.415-.922-.912-1.435-2.128t-.513-2.66.513-2.66 1.435-2.128 2.165-1.416 2.708-.503 2.707.504 2.167 1.415 1.434 2.128.513 2.66-.513 2.66-1.434 2.128-2.167 1.416-2.707.503m0-.361q1.368 0 2.546-.475t2.052-1.34 1.358-2.013.485-2.518-.485-2.518-1.358-2.014-2.052-1.339-2.546-.475-2.546.475-2.052 1.34-1.359 2.013-.484 2.518.484 2.517 1.359 2.014 2.052 1.34 2.546.475m32.034.361q-1.463 0-2.707-.504-1.245-.503-2.167-1.415t-1.434-2.128-.513-2.66.513-2.66 1.434-2.128 2.166-1.416 2.708-.503q1.311 0 2.489.418t2.033 1.273l-.228.266q-.912-.874-1.995-1.235t-2.299-.361q-1.368 0-2.546.484-1.178.485-2.052 1.35-.874.864-1.359 2.013-.484 1.15-.484 2.499t.484 2.498 1.359 2.014 2.052 1.35 2.546.484q1.216 0 2.299-.37 1.083-.371 1.995-1.245l.228.266q-.855.855-2.033 1.283t-2.489.427m13.604-.057v-13.3h.38v12.939h7.923V300Zm14.364 0 6.175-13.3h.38l6.175 13.3h-.437l-6.023-12.996h.19L608.085 300Zm2.033-4.009.19-.361h8.265l.19.361ZM628.776 300v-13.3h4.503q2.451 0 3.838 1.15t1.387 3.22q0 1.368-.627 2.346-.627.979-1.795 1.502-1.169.522-2.803.522h-4.294l.171-.171V300Zm9.443 0-3.477-4.826h.475l3.477 4.826Zm-9.063-4.769-.171-.152h4.332q2.337 0 3.572-1.055t1.235-2.954q0-1.919-1.235-2.964t-3.572-1.045h-4.332l.171-.152ZM648.08 300v-13.3h.38V300Zm13.623 0v-12.939h-4.94v-.361h10.26v.361h-4.94V300Zm16.701 0v-4.655l.095.285-5.51-8.93h.437l5.244 8.493h-.152l5.244-8.493h.437l-5.51 8.93.095-.285V300Z"></path>
     </g>
 </svg></div></div>
+  </div>
+  <div class="doomband" role="region" aria-label="Master data deadline">
+    <div class="wrap">
+      <div class="db-head">
+        <span class="live"><i></i>Deadline</span>
+        <h3>Clean, automated master data by <b id="doomDate"></b>, or out of business.</h3>
+        <p>Aggregate it. Cleanse it. Automate everything that can be automated. Companies that miss the date are not competing, they are closing.</p>
+      </div>
+      <div class="db-clock" id="doomTick" aria-live="off">
+        <div class="seg"><span class="n" data-u="d">000</span><span class="u">Days</span></div><i>:</i>
+        <div class="seg"><span class="n" data-u="h">00</span><span class="u">Hours</span></div><i>:</i>
+        <div class="seg"><span class="n" data-u="m">00</span><span class="u">Minutes</span></div><i>:</i>
+        <div class="seg"><span class="n" data-u="s">00</span><span class="u">Seconds</span></div>
+      </div>
+    </div>
   </div>
   <button class="replay" type="button" onclick="window.stormReplay()" aria-label="Replay the animation">&#8635; Replay</button>
   <a class="scrollcue" href="#mission" aria-label="Scroll down to see how we do it"><span>Scroll to see how</span><i></i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></a>
@@ -302,10 +309,10 @@
   <div class="wrap">
     <div class="sec-head rv"><div><div class="eyebrow">The team</div><h2>Four disciplines. One table.</h2></div><p>Nobody on the team is a generalist. Every engagement gets all four: Source-to-Pay leadership, operations and analytics, the IT practice that secures it, and 30 years of regulated statistics behind the numbers.</p></div>
     <div class="people">
-      <article class="person rv"><div class="av">JC</div><h3>James F. Canfield IV</h3><div class="role">Chief Executive Officer</div><p>Source-to-Pay leadership from analyst to senior director inside Fortune 500 and private-equity-backed companies. Built a global indirect procurement organization from nothing; eight-figure savings in year one.</p><div class="tags"><span>Spend analytics</span><span>Zero-Touch AP</span><span>Speaker</span></div></article>
-      <article class="person rv d1"><div class="av">JM</div><h3>Jake M. Martinko</h3><div class="role">Chief Operating Officer</div><p>Procurement and supply-chain operations from U.S. Navy Supply Corps logistics to procurement excellence in specialty chemicals. Validates every KPI and signs the numbers before a client sees them.</p><div class="tags"><span>Operations</span><span>KPI validation</span><span>Navy Supply Corps</span></div></article>
-      <article class="person rv d2"><div class="av">JB</div><h3>Justin M. Boynton</h3><div class="role">Chief Information Officer</div><p>Designs, runs and secures infrastructure for healthcare, industrial, financial, legal, education and non-profit organizations. Own data center, so client data is handled by people who secure networks for a living.</p><div class="tags"><span>Infrastructure</span><span>Cyber</span><span>Private cloud</span></div></article>
-      <article class="person rv d3"><div class="av">LM</div><h3>Lawrence Marinucci</h3><div class="role">Advisor, Statistics</div><p>30 years as a clinical trials statistician at a publicly traded biopharma, now in private consulting. Brings the rigor of regulated statistics to spend models, sampling and the validation of every savings claim.</p><div class="tags"><span>30 yrs statistics</span><span>Validation</span><span>Biopharma</span></div></article>
+      <article class="person rv"><div class="av">CEO</div><h3>Chief Executive Officer</h3><div class="role">Source-to-Pay</div><p>Source-to-Pay leadership from analyst to senior director inside Fortune 500 and private-equity-backed companies. Built a global indirect procurement organization from nothing; eight-figure savings in year one.</p><div class="tags"><span>Spend analytics</span><span>Zero-Touch AP</span><span>Speaker</span></div></article>
+      <article class="person rv d1"><div class="av">COO</div><h3>Chief Operating Officer</h3><div class="role">Procurement operations</div><p>Procurement and supply-chain operations from U.S. Navy Supply Corps logistics to procurement excellence in specialty chemicals. Validates every KPI and signs the numbers before a client sees them.</p><div class="tags"><span>Operations</span><span>KPI validation</span><span>Navy Supply Corps</span></div></article>
+      <article class="person rv d2"><div class="av">CIO</div><h3>Chief Information Officer</h3><div class="role">Infrastructure and security</div><p>Designs, runs and secures infrastructure for healthcare, industrial, financial, legal, education and non-profit organizations. Own data center, so client data is handled by people who secure networks for a living.</p><div class="tags"><span>Infrastructure</span><span>Cyber</span><span>Private cloud</span></div></article>
+      <article class="person rv d3"><div class="av">ADV</div><h3>Advisor, Statistics</h3><div class="role">Clinical trials statistician</div><p>30 years as a clinical trials statistician at a publicly traded biopharma, now in private consulting. Brings the rigor of regulated statistics to spend models, sampling and the validation of every savings claim.</p><div class="tags"><span>30 yrs statistics</span><span>Validation</span><span>Biopharma</span></div></article>
     </div>
   </div>
 </section>

@@ -17,7 +17,18 @@ function decode(el){
   requestAnimationFrame(frame);
 }
 var hobs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){decode(e.target);hobs.unobserve(e.target)}})},{threshold:.6});
-$$('.sec-head h2, .numbers h2, .contact h2, .band h2, .mission .quote').forEach(function(h){hobs.observe(h)});
+$$('#pricing .sec-head h2, .numbers h2').forEach(function(h){hobs.observe(h)});
+
+/* 1b. mission morph: the loss line disintegrates, the solution assembles out of it */
+(function(){var box=document.getElementById('morph');if(!box)return;
+  function split(p){var out=[];(function walk(n){Array.prototype.slice.call(n.childNodes).forEach(function(c){if(c.nodeType===3){var f=document.createDocumentFragment(),words=c.nodeValue.split(/(\s+)/);words.forEach(function(wd){if(!wd)return;if(/^\s+$/.test(wd)){f.appendChild(document.createTextNode(' '));return}var w=document.createElement('span');w.className='w';for(var i=0;i<wd.length;i++){var sp=document.createElement('span');sp.className='ch';sp.textContent=wd[i];sp.style.setProperty('--dx',(Math.random()*160-80).toFixed(0)+'px');sp.style.setProperty('--dy',(60+Math.random()*160).toFixed(0)+'px');sp.style.setProperty('--rz',(Math.random()*90-45).toFixed(0)+'deg');sp.style.setProperty('--ax',(Math.random()*120-60).toFixed(0)+'px');sp.style.setProperty('--ay',(Math.random()*80-40).toFixed(0)+'px');out.push(sp);w.appendChild(sp)}f.appendChild(w)});n.replaceChild(f,c)}else if(c.nodeType===1)walk(c)})})(p);return out}
+  var loss=split(box.querySelector('.m-loss')),win=split(box.querySelector('.m-win'));
+  loss.forEach(function(s,i){s.style.setProperty('--d',(i*22+Math.random()*120).toFixed(0)+'ms')});
+  win.forEach(function(s,i){s.style.setProperty('--d',(i*14+Math.random()*160).toFixed(0)+'ms')});
+  var timer;function play(){clearTimeout(timer);box.classList.remove('go','done');void box.offsetWidth;box.classList.add('armed');timer=setTimeout(function(){box.classList.add('go');timer=setTimeout(function(){box.classList.add('done')},2600)},1500)}
+  var mo=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){play();mo.unobserve(box)}})},{threshold:.6});mo.observe(box);
+  box.addEventListener('click',play);box.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();play()}});
+})();
 
 /* 2. dashboards: tilt in 3D, flatten when centered */
 var frames=$$('.dash .frame');

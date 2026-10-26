@@ -54,17 +54,25 @@
         <a class="btn btn-glow" href="#spend-reports">See the numbers <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
         <a class="btn btn-glass" href="#contact">Book a discovery call</a>
       </div>
+      <div class="clocks">
       <div class="leak">
         <span class="live"><i></i>Live</span>
         <span class="lk">Leaked since you opened this page</span>
         <span class="mono big" id="costTick">$0.00</span>
         <span class="lk small">A $2B spend base loses about 0.6 percent a year. 38 cents a second, every second.*</span>
       </div>
+      <div class="leak doom">
+        <span class="live"><i></i>Deadline</span>
+        <span class="lk">Clean, automated master data, or out of business</span>
+        <span class="mono big dm" id="doomTick">000d 00:00:00</span>
+        <span class="lk small">Aggregate it, cleanse it, automate everything that can be automated by <b id="doomDate"></b>. Companies that miss that date are not competing, they are closing.</span>
+      </div>
+      </div>
     </div>
     <div class="hchart" aria-hidden="true"><div class="bigmark">{{MARK}}</div></div>
   </div>
   <button class="replay" type="button" onclick="window.stormReplay()" aria-label="Replay the animation">&#8635; Replay</button>
-  <div class="scrollcue" aria-hidden="true"><i></i>Scroll</div>
+  <a class="scrollcue" href="#mission" aria-label="Scroll down to see how we do it"><span>Scroll to see how</span><i></i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></a>
 </section>
 
 <div class="marq" aria-label="Industries served">

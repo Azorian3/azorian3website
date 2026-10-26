@@ -94,3 +94,13 @@ $$('form[data-form]').forEach(function(f){f.addEventListener('submit',function(e
 })});
 
 })();
+
+/* master data deadline clock */
+(function(){var el=document.getElementById('doomTick'),dd=document.getElementById('doomDate');if(!el)return;
+var D=new Date(2028,0,1,0,0,0);if(dd)dd.textContent=D.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+function p(n,w){n=String(n);while(n.length<(w||2))n='0'+n;return n}
+function f(){var s=Math.max(0,Math.floor((D-Date.now())/1000)),d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60),x=s%60;el.textContent=p(d,3)+'d '+p(h)+':'+p(m)+':'+p(x)}
+f();setInterval(f,1000)})();
+
+/* scroll cue hides once the visitor has scrolled */
+(function(){var cue=document.querySelector('.scrollcue');if(!cue)return;function u(){cue.classList.toggle('gone',window.scrollY>160)}window.addEventListener('scroll',u,{passive:true});u()})();

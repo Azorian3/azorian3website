@@ -16,8 +16,9 @@ logo=logo.replace('<path fill="#F4F4F2" d="m302','<path class="word" fill="#F4F4
 logo=logo.replace('<path fill="#5FE3FF" d="M1100','<path class="three" fill="#5FE3FF" d="M1100',1)
 logo=logo.replace('<path fill="#B9BDC2"','<path class="tag" fill="#B9BDC2"',1)
 icons={'ICON_SPEND':rd('assets/img/icon-spend.svg'),'ICON_P2P':rd('assets/img/icon-p2p.svg'),'ICON_AI':rd('assets/img/icon-ai.svg'),'ICON_LEAD':rd('assets/img/icon-lead.svg')}
+mark=re.sub(r'viewBox="[^"]*"','viewBox="20 30 290 290"',logo,1).replace('class="a3logo"','class="a3logo a3mark"',1)
 def render(src,dst):
-    h=rd(src).replace('{{LOGO}}',logo)
+    h=rd(src).replace('{{LOGO}}',logo).replace('{{MARK}}',mark)
     for k,v in icons.items(): h=h.replace('{{'+k+'}}',v)
     assert '{{' not in h
     open(dst,'w',encoding='utf-8').write(h); print(dst,len(h))

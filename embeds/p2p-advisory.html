@@ -1,0 +1,112 @@
+<!doctype html><html lang="en"><head><style>
+  body, body * { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; -webkit-touch-callout: none !important; }
+  input, textarea, [contenteditable="true"] { -webkit-user-select: text !important; -moz-user-select: text !important; user-select: text !important; }
+  img, svg, video { -webkit-user-drag: none !important; pointer-events: auto; }
+</style>
+<script>
+(function () {
+  var block = function (e) {
+    var t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    e.preventDefault();
+    return false;
+  };
+  ['contextmenu', 'selectstart', 'dragstart', 'copy', 'cut'].forEach(function (ev) {
+    document.addEventListener(ev, block, true);
+  });
+  document.addEventListener('keydown', function (e) {
+    var k = (e.key || '').toLowerCase();
+    var t = e.target;
+    var editable = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
+    if ((e.ctrlKey || e.metaKey) && !editable && ['a', 'c', 's', 'u', 'p'].indexOf(k) !== -1) { e.preventDefault(); return false; }
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i', 'j', 'c'].indexOf(k) !== -1) { e.preventDefault(); return false; }
+    if (k === 'f12') { e.preventDefault(); return false; }
+  }, true);
+})();
+</script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{--panel:rgba(20,23,32,.72);--panel2:rgba(28,31,42,.85);--line:rgba(122,132,255,.16);--text:#E5E7EB;--muted:#9CA3AF;--label:#C7D2FE;--title:#F3F4F6;--primary:#7A84FF;--secondary:#F29A45;--tertiary:#A78CFF;--accent:#35C89A;--cyan:#3EB8ED;--neg:#F53B3A;--neutral:#6F8DA6}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden;max-width:100%;background:transparent;scrollbar-width:none}html::-webkit-scrollbar,body::-webkit-scrollbar{width:0;height:0;display:none}
+body{font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
+h3,h4,h5{color:var(--title);line-height:1.2}
+h3{font-size:1.35rem;font-weight:800;letter-spacing:-.01em}
+.wrap{position:relative;border:1px solid var(--line);border-radius:22px;padding:26px;overflow:hidden;
+  background:radial-gradient(900px 420px at 90% -10%,rgba(167,140,255,.20),transparent 60%),radial-gradient(700px 380px at 5% 30%,rgba(62,184,237,.12),transparent 60%),radial-gradient(600px 300px at 50% 110%,rgba(53,200,154,.10),transparent 60%),#0D1017;
+  box-shadow:0 0 0 1px rgba(122,132,255,.08),0 30px 80px rgba(0,0,0,.55)}
+.wrap::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;background-image:linear-gradient(rgba(122,132,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(122,132,255,.08) 1px,transparent 1px);background-size:36px 36px;mask-image:radial-gradient(ellipse at 50% 0%,#000 30%,transparent 80%)}
+.wrap::after{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--tertiary),var(--cyan),var(--accent),transparent);animation:scan 6s linear infinite}
+@keyframes scan{0%{transform:translateX(-40%)}100%{transform:translateX(40%)}}
+.wrap>*{position:relative;z-index:1}
+.grid{display:grid;gap:14px}.g2{grid-template-columns:1fr 1fr}
+@media(max-width:760px){.g2{grid-template-columns:1fr}}
+.chart{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;backdrop-filter:blur(10px);transition:border-color .2s}
+.chart:hover{border-color:rgba(122,132,255,.4)}
+.chart h4{font-size:.95rem;font-weight:700}
+.chart .sub{color:var(--muted);font-size:.78rem;margin:2px 0 10px}
+#cRadar,#cBubble{max-height:340px}
+.waves{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+@media(max-width:760px){.waves{grid-template-columns:1fr}}
+.wave{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;backdrop-filter:blur(10px);overflow:hidden}
+.wave::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--primary);box-shadow:0 0 18px var(--primary)}
+.wave:nth-child(2)::before{background:var(--secondary);box-shadow:0 0 18px var(--secondary)}.wave:nth-child(3)::before{background:var(--accent);box-shadow:0 0 18px var(--accent)}
+.wave .when{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.wave h4{margin:6px 0 10px;font-size:1.02rem}
+.wave li{color:var(--muted);font-size:.86rem;margin-left:16px;padding:2px 0}
+.wave li::marker{color:var(--primary)}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:18px;position:relative}
+@media(max-width:760px){.flow{grid-template-columns:1fr}}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;position:relative;backdrop-filter:blur(10px)}
+.step::after{content:"›";position:absolute;right:-9px;top:50%;transform:translateY(-50%);color:var(--cyan);font-size:1.4rem;font-weight:800;text-shadow:0 0 10px var(--cyan)}
+.step:last-child::after{display:none}
+@media(max-width:760px){.step::after{display:none}}
+.step .n{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--cyan);font-weight:700;letter-spacing:.12em}
+.step h5{font-size:.93rem;margin:6px 0 6px}
+.step p{color:var(--muted);font-size:.8rem}
+.title{display:flex;align-items:center;gap:12px;margin-top:26px}
+.title .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--tertiary),var(--cyan));display:grid;place-items:center;color:#0A0C12;font-weight:900;font-size:.85rem;box-shadow:0 0 22px rgba(167,140,255,.55)}
+@media(max-width:640px){.wrap{padding:14px;border-radius:16px}}
+.grid>*,.waves>*,.flow>*{min-width:0}.card,.panel{min-width:0;overflow:hidden}canvas{width:100%!important;max-width:100%}
+</style></head><body>
+<div class="wrap">
+    <div class="title" style="margin:0 0 16px"><span class="logo">P2P</span><h3>P2P Advisory Toolkit</h3></div>
+    <div class="grid g2">
+      <div class="chart" style="padding:22px"><h4>P2P maturity assessment · sample</h4><div class="sub">Current state vs 18-month target across eight dimensions (1 to 5 scale)</div><canvas id="cRadar" height="340"></canvas></div>
+      <div class="chart" style="padding:22px"><h4>Initiative prioritization · sample</h4><div class="sub">Annual value (USD) vs S/4 readiness; bubble size = effort</div><canvas id="cBubble" height="340"></canvas></div>
+    </div>
+
+    <div class="waves">
+      <div class="wave"><div class="when">Wave 1 · Months 0 to 6</div><h4>Fix the foundation</h4><ul><li>Vendor master cleanup &amp; golden records</li><li>Payment-terms rationalization (&lt;30 terms)</li><li>No-PO-No-Pay policy &amp; exception WIP baseline</li><li>KPI framework and daily spend refresh</li></ul></div>
+      <div class="wave"><div class="when">Wave 2 · Months 6 to 12</div><h4>Automate the flow</h4><ul><li>Zero-Touch AP: self-healing exceptions</li><li>Pre-emptive PO budget &amp; amendment alerts</li><li>Catalog &amp; guided buying for top maverick categories</li><li>Process-mining driven cycle-time targets</li></ul></div>
+      <div class="wave"><div class="when">Wave 3 · Months 12 to 18</div><h4>Scale with AI</h4><ul><li>AI semantic matching for services / SES flow</li><li>Agentic exception handling with human-in-the-loop</li><li>Supplier intelligence &amp; risk scoring</li><li>S/4HANA readiness and MDG governance model</li></ul></div>
+    </div>
+
+    <div class="title"><span class="logo">ZT</span><h3>Zero-Touch AP reference architecture</h3></div>
+    <p style="color:var(--muted);max-width:760px;margin-top:6px">Exceptions should not wait for a human to notice them. This pattern re-evaluates every blocked invoice on upstream events and alerts buyers before the invoice arrives.</p>
+    <div class="flow">
+      <div class="step"><div class="n">01 CAPTURE</div><h5>OCR / IDP intake</h5><p>Invoice captured via VIM/IDP, header and lines extracted, vendor normalized against golden record.</p></div>
+      <div class="step"><div class="n">02 MATCH</div><h5>3-way + semantic match</h5><p>Deterministic match on PO/GR; AI semantic matching for services and contractor entries.</p></div>
+      <div class="step"><div class="n">03 PRE-EMPT</div><h5>Budget &amp; amendment alerts</h5><p>PO budget and amendment alerts fire to the buyer before the invoice lands, not after it blocks.</p></div>
+      <div class="step"><div class="n">04 SELF-HEAL</div><h5>Event-driven re-evaluation</h5><p>Blocked invoices re-evaluated on GR posting and PO change events; most clear with no touch.</p></div>
+      <div class="step"><div class="n">05 GOVERN</div><h5>Human-in-the-loop</h5><p>True exceptions routed with SoD-aware approvals, full audit trail and recertification.</p></div>
+    </div>
+</div>
+<script>
+const C={primary:'#7A84FF',secondary:'#F29A45',tertiary:'#A78CFF',accent:'#35C89A',neg:'#F53B3A',link:'#3EB8ED',neutral:'#6F8DA6',c1:'#DA9165',c2:'#867EAA',c3:'#6FB98C',grid:'rgba(122,132,255,.12)',text:'#C7D2FE',muted:'#9CA3AF'};
+Chart.defaults.color=C.muted;Chart.defaults.font.family='Inter';Chart.defaults.borderColor=C.grid;
+const catColors=[C.primary,C.secondary,C.tertiary,C.accent,C.link,C.c1,C.c2,C.c3,C.neutral,'#4B5563'];
+const opts=(extra={})=>({responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#D1D5DB',boxWidth:12,usePointStyle:true}},tooltip:{backgroundColor:'rgba(20,23,32,.95)',borderColor:'rgba(122,132,255,.35)',borderWidth:1,padding:10,cornerRadius:8,titleColor:'#F3F4F6',bodyColor:'#D1D5DB'}},scales:{x:{grid:{color:C.grid},ticks:{color:C.text}},y:{grid:{color:C.grid},ticks:{color:C.text}}},...extra});
+
+function buildStatic(){
+new Chart(document.getElementById('cRadar'),{type:'radar',data:{labels:(window.innerWidth<480?['Master data','Sourcing','Req-to-PO','Invoicing','Payments','Controls','Analytics','Automation']:['Master data','Sourcing & contracts','Req-to-PO','Invoice processing','Payments & terms','Controls & SoD','Analytics','Automation & AI']),datasets:[{label:'Current state',data:[2.1,2.8,2.4,2.6,2.2,2.9,1.8,1.6],borderColor:C.secondary,backgroundColor:'rgba(242,154,69,.18)',pointBackgroundColor:C.secondary,borderWidth:2},{label:'18-month target',data:[4.2,4.0,3.8,4.3,4.0,4.4,4.5,3.9],borderColor:C.primary,backgroundColor:'rgba(122,132,255,.15)',pointBackgroundColor:C.primary,borderWidth:2},{label:'Top quartile',data:[4.6,4.5,4.4,4.7,4.5,4.6,4.7,4.4],borderColor:C.accent,borderDash:[5,5],backgroundColor:'transparent',pointRadius:0,borderWidth:1.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#D1D5DB',boxWidth:12,usePointStyle:true}}},scales:{r:{min:0,max:5,ticks:{stepSize:1,color:C.muted,backdropColor:'transparent'},grid:{color:C.grid},angleLines:{color:C.grid},pointLabels:{color:C.text,font:{size:window.innerWidth<480?9:11}}}}}});
+const inits=[['Vendor master governance',3.1,.85,3],['Payment-terms rationalization',1.4,.9,2],['Zero-Touch AP (self-healing)',2.6,.55,4],['Guided buying / catalogs',1.9,.7,3],['Services semantic matching',1.2,.35,4],['Supplier risk scoring',.8,.6,2],['Process-mining KPIs',.9,.8,1.5],['Spend cube daily refresh',1.6,.95,2]];
+new Chart(document.getElementById('cBubble'),{type:'bubble',data:{datasets:inits.map((d,i)=>({label:d[0],data:[{x:d[2]*100,y:d[1],r:d[3]*5}],backgroundColor:catColors[i]+'B3',borderColor:catColors[i]}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#D1D5DB',boxWidth:10,usePointStyle:true,font:{size:10}}},tooltip:{...opts().plugins.tooltip,callbacks:{label:c=>`${c.dataset.label}: $${c.raw.y}M/yr · ${c.raw.x}% ready`}}},scales:{x:{min:20,max:100,title:{display:true,text:'S/4 readiness (%)',color:C.muted},grid:{color:C.grid},ticks:{color:C.text}},y:{min:0,max:3.6,title:{display:true,text:'Annual value ($M)',color:C.muted},grid:{color:C.grid},ticks:{color:C.text}}}}});
+}
+// wait for webfonts so Chart.js measures labels with the final font
+(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(()=>{buildStatic()});
+function fixSizes(){try{Object.values(Chart.instances).forEach(c=>{if(c.options.responsive!==false)c.resize()})}catch(e){}}
+window.addEventListener('resize',fixSizes);[300,800,1500,3000,6000,10000].forEach(t=>setTimeout(fixSizes,t));setInterval(fixSizes,3000);
+</script></body></html>

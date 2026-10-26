@@ -1,0 +1,435 @@
+<!doctype html><html lang="en"><head><style>
+  body, body * { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; -webkit-touch-callout: none !important; }
+  input, textarea, [contenteditable="true"] { -webkit-user-select: text !important; -moz-user-select: text !important; user-select: text !important; }
+  img, svg, video { -webkit-user-drag: none !important; pointer-events: auto; }
+</style>
+<script>
+(function () {
+  var block = function (e) {
+    var t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    e.preventDefault();
+    return false;
+  };
+  ['contextmenu', 'selectstart', 'dragstart', 'copy', 'cut'].forEach(function (ev) {
+    document.addEventListener(ev, block, true);
+  });
+  document.addEventListener('keydown', function (e) {
+    var k = (e.key || '').toLowerCase();
+    var t = e.target;
+    var editable = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
+    if ((e.ctrlKey || e.metaKey) && !editable && ['a', 'c', 's', 'u', 'p'].indexOf(k) !== -1) { e.preventDefault(); return false; }
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i', 'j', 'c'].indexOf(k) !== -1) { e.preventDefault(); return false; }
+    if (k === 'f12') { e.preventDefault(); return false; }
+  }, true);
+})();
+</script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--panel:rgba(20,23,32,.72);--panel2:rgba(28,31,42,.85);--line:rgba(122,132,255,.16);--text:#E5E7EB;--muted:#9CA3AF;--label:#C7D2FE;--title:#F3F4F6;--primary:#7A84FF;--secondary:#F29A45;--tertiary:#A78CFF;--accent:#35C89A;--cyan:#3EB8ED;--neg:#F53B3A}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden;max-width:100%;background:transparent;scrollbar-width:none}html::-webkit-scrollbar,body::-webkit-scrollbar{width:0;height:0;display:none}
+body{font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
+h3,h4,h5{color:var(--title);line-height:1.2}
+.wrap{position:relative;border:1px solid var(--line);border-radius:22px;padding:26px;overflow:hidden;
+  background:radial-gradient(900px 420px at 90% -10%,rgba(167,140,255,.20),transparent 60%),radial-gradient(700px 380px at 5% 30%,rgba(62,184,237,.12),transparent 60%),radial-gradient(600px 300px at 50% 110%,rgba(53,200,154,.10),transparent 60%),#0D1017;
+  box-shadow:0 0 0 1px rgba(122,132,255,.08),0 30px 80px rgba(0,0,0,.55)}
+.wrap::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;background-image:linear-gradient(rgba(122,132,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(122,132,255,.08) 1px,transparent 1px);background-size:36px 36px;mask-image:radial-gradient(ellipse at 50% 0%,#000 30%,transparent 80%)}
+.wrap::after{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--tertiary),var(--cyan),var(--accent),transparent);animation:scan 6s linear infinite}
+@keyframes scan{0%{transform:translateX(-40%)}100%{transform:translateX(40%)}}
+.wrap>*{position:relative;z-index:1}
+.tabs{display:flex;gap:6px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;padding:5px;margin-bottom:20px;flex-wrap:wrap}
+.tabs button{flex:1;min-width:120px;background:transparent;border:0;color:var(--muted);font:600 .82rem 'Inter',sans-serif;padding:10px 12px;border-radius:9px;cursor:pointer;transition:all .2s;letter-spacing:.01em}
+.tabs button:hover{color:var(--label)}
+.tabs button.on{background:linear-gradient(135deg,rgba(122,132,255,.35),rgba(62,184,237,.25));color:#fff;box-shadow:0 0 18px -4px var(--primary);border:1px solid rgba(122,132,255,.45)}
+.pane{display:none;animation:fade .35s ease}.pane.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.head h3{font-size:1.25rem;font-weight:800;letter-spacing:-.01em}
+.head .sub{color:var(--muted);font-size:.82rem;max-width:640px;margin-top:4px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:999px;border:1px solid;white-space:nowrap}
+.chip.p{color:var(--primary);border-color:rgba(122,132,255,.4);background:rgba(122,132,255,.08)}
+.chip.c{color:var(--cyan);border-color:rgba(62,184,237,.4);background:rgba(62,184,237,.08)}
+.chip.a{color:var(--accent);border-color:rgba(53,200,154,.4);background:rgba(53,200,154,.08)}
+.chip.o{color:var(--secondary);border-color:rgba(242,154,69,.4);background:rgba(242,154,69,.08)}
+.chip i{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor;animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+/* pricing */
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:820px){.tiers{grid-template-columns:1fr}}
+.tier{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 20px 20px;backdrop-filter:blur(10px);display:flex;flex-direction:column;transition:transform .25s,border-color .25s,box-shadow .25s}
+.tier:hover{transform:translateY(-4px);border-color:var(--g);box-shadow:0 0 34px -10px var(--g)}
+.tier.hot{border-color:rgba(122,132,255,.45);background:linear-gradient(180deg,rgba(122,132,255,.10),var(--panel) 40%)}
+.tier .k{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--g);font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.tier h4{font-size:1.05rem;font-weight:800;margin-top:8px}
+.tier .for{color:var(--muted);font-size:.8rem;margin-top:4px;min-height:2.4em}
+.tier .price{font-family:'JetBrains Mono',monospace;font-size:1.9rem;font-weight:700;color:var(--title);margin:14px 0 0;letter-spacing:-.03em;text-shadow:0 0 22px var(--g)}
+.tier .price small.fr{margin:0 6px 0 0}
+.tier .price small{font:600 .72rem 'Inter',sans-serif;color:var(--muted);letter-spacing:0;text-shadow:none;margin-left:6px}
+.tier .speed{font-size:.74rem;color:var(--g);font-weight:600;margin-top:4px}
+.tier ul{list-style:none;margin:14px 0 0;display:grid;gap:8px;flex:1}
+.tier li{font-size:.8rem;color:#D1D5DB;padding-left:20px;position:relative;line-height:1.4}
+.tier li::before{content:"";position:absolute;left:0;top:7px;width:9px;height:9px;border-radius:3px;background:var(--g);box-shadow:0 0 10px var(--g)}
+.tier .own{margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,.06);font-size:.74rem;color:var(--muted)}
+.tier .own b{color:var(--title);font-weight:600}
+.vs{margin-top:16px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 18px;overflow:hidden}
+.vs h4{font-size:.85rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+table{width:100%;border-collapse:collapse;font-size:.78rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:top}
+th{font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+td:first-child{color:var(--label);font-weight:600;white-space:nowrap}
+td.us{color:var(--accent);font-weight:600}
+td.them{color:var(--muted)}
+.note{margin-top:12px;font-size:.72rem;color:var(--muted)}
+/* pricing drivers + estimator */
+.drv{margin-top:16px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.drv h4{font-size:.85rem;font-weight:700;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.drv .lead{font-size:.78rem;color:var(--muted);margin-top:4px}
+.dgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:12px}
+@media(max-width:900px){.dgrid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.dgrid{grid-template-columns:1fr;gap:6px;margin-top:6px}}
+.d{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:10px 12px;position:relative;overflow:hidden}
+.d::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--g);box-shadow:0 0 10px var(--g)}
+.d b{display:block;font-size:.78rem;color:var(--title);font-weight:700}
+.d i{display:block;font-style:normal;font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--g);letter-spacing:.06em;margin-top:2px}
+.d span{display:block;font-size:.72rem;color:#CBD5E1;margin-top:5px;line-height:1.45}
+@media(max-width:560px){.d span{display:none}.d{padding:8px 12px}}
+.est{margin-top:14px;border-top:1px solid rgba(255,255,255,.06);padding-top:14px}
+.est[hidden]{display:none}
+.est h4{margin-bottom:4px}
+.egrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
+@media(max-width:900px){.egrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.egrid{grid-template-columns:1fr}}
+.f label{display:block;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:4px}
+.f select{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--text);border-radius:9px;padding:8px 10px;font:600 .8rem 'Inter',sans-serif;outline:none}
+.f select:focus{border-color:var(--primary)}
+.opts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.opts label{display:inline-flex;align-items:center;gap:7px;font-size:.76rem;color:#D1D5DB;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:999px;padding:6px 12px;cursor:pointer}
+.opts input{accent-color:var(--primary)}
+.eout{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+@media(max-width:760px){.eout{grid-template-columns:1fr}}
+.eo{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:12px 14px}
+.eo .k{font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--g);font-weight:700}
+.eo .v{font-family:'JetBrains Mono',monospace;font-size:1.35rem;font-weight:700;color:var(--title);margin-top:4px;letter-spacing:-.02em;text-shadow:0 0 18px var(--g)}
+.eo .v small{font:600 .68rem 'Inter',sans-serif;color:var(--muted);text-shadow:none;margin-left:6px}
+.eo .m{font-size:.7rem;color:var(--muted);margin-top:4px}
+.est .note{margin-top:10px}
+/* security */
+.sec{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:820px){.sec{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.sec{grid-template-columns:1fr}}
+.s{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;backdrop-filter:blur(10px);transition:transform .2s,border-color .2s,box-shadow .2s;position:relative;overflow:hidden}
+.s:hover{transform:translateY(-3px);border-color:var(--g);box-shadow:0 0 26px -8px var(--g)}
+.s .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);margin-bottom:10px}
+.s .ic svg{width:18px;height:18px;stroke:var(--g);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px var(--g))}
+.s h5{font-size:.88rem;font-weight:700}
+.s p{font-size:.76rem;color:#CBD5E1;margin-top:5px;line-height:1.45}
+.s .tag{position:absolute;top:12px;right:12px;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--g);font-weight:700;opacity:.9}
+.flow{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.flow h4{font-size:.85rem;font-weight:700;margin-bottom:10px}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+@media(max-width:760px){.steps{grid-template-columns:repeat(2,1fr)}}
+.st{position:relative;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:10px 10px 10px 12px}
+.st b{display:block;font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--cyan);letter-spacing:.1em}
+.st span{display:block;font-size:.76rem;color:var(--title);font-weight:600;margin-top:3px}
+.st em{display:block;font-style:normal;font-size:.68rem;color:var(--muted);margin-top:2px}
+.st::after{content:"";position:absolute;right:-6px;top:50%;width:6px;height:1px;background:var(--line)}
+.st:last-child::after{display:none}
+/* faq */
+.faq{display:grid;gap:8px}
+details{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:0 16px;transition:border-color .2s}
+details[open]{border-color:rgba(122,132,255,.45)}
+summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 0;font-size:.88rem;font-weight:600;color:var(--title)}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:'JetBrains Mono',monospace;color:var(--primary);font-size:1rem;transition:transform .2s;flex:none}
+details[open] summary::after{transform:rotate(45deg)}
+details p{font-size:.8rem;color:#CBD5E1;padding:0 0 14px;line-height:1.5}
+.kw{margin-top:14px;display:flex;gap:6px;flex-wrap:wrap}
+.kw span{font-size:.66rem;color:var(--label);border:1px solid rgba(122,132,255,.25);background:rgba(122,132,255,.06);padding:3px 9px;border-radius:999px}
+.cta{margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;background:linear-gradient(90deg,rgba(122,132,255,.14),rgba(62,184,237,.10));border:1px solid rgba(122,132,255,.35);border-radius:14px;padding:14px 18px}
+.cta b{color:var(--title);font-size:.9rem}
+.cta small{display:block;color:var(--muted);font-size:.74rem;margin-top:2px}
+.cta a{background:var(--primary);color:#fff;text-decoration:none;font-weight:700;font-size:.8rem;padding:10px 18px;border-radius:9px;box-shadow:0 0 22px -6px var(--primary);white-space:nowrap}
+/* mobile compaction: bullets and comparison fold behind a tap */
+details.inc{background:transparent;border:0;padding:0;border-radius:0}
+details.inc>summary{display:none}
+.tabs button .sh{display:none}
+.tabs button[data-t=cmp]{display:none}
+#cmp .vs{margin-top:0}
+details.cmp>summary{display:none!important}
+@media(max-width:560px){
+  .wrap{padding:16px;border-radius:16px}
+  .tabs{gap:4px;padding:4px;margin-bottom:14px}
+  .tabs button{min-width:0;flex:1 1 calc(50% - 4px);padding:8px 6px;font-size:.74rem}
+  .tabs button .l{display:none}.tabs button .sh{display:inline}
+  .tabs button[data-t=cmp]{display:block}
+  .head{margin-bottom:12px}.head h3{font-size:1.05rem}
+  .tier{padding:16px 14px 14px}.tier .for{min-height:0}
+  details.inc>summary{display:flex;padding:9px 0 4px;font-size:.78rem;color:var(--label)}
+  details.inc>summary::after{color:var(--g,var(--primary))}
+  .tier ul{margin-top:6px}
+  .vs{padding:12px 14px}.vs h4{margin-bottom:4px}.vs h4 .chip{display:none}
+  .cmp table,.cmp tbody,.cmp tr,.cmp td{display:block;width:100%}
+  .cmp thead{display:none}
+  .cmp tr{padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+  .cmp td{padding:1px 0;border:0;white-space:normal}
+  .cmp td:first-child{font-size:.82rem;color:var(--title);margin-bottom:2px}
+  .cmp td.us::before{content:"Azorian: ";color:var(--label);font-weight:600}
+  .cmp td.them::before{content:"Typical large firm: ";color:var(--label);font-weight:600}
+  .head .sub{display:none}
+  .head .chip{white-space:normal;text-align:left;line-height:1.3;max-width:100%;font-size:.6rem;letter-spacing:.06em}
+  .s{padding:11px 14px;cursor:pointer}.s .ic{display:none}.s .tag{display:none}
+  .s h5{padding-right:22px;font-size:.84rem}
+  .s::after{content:"+";position:absolute;right:14px;top:9px;font-family:'JetBrains Mono',monospace;color:var(--g);font-size:1rem;transition:transform .2s}
+  .s.open::after{transform:rotate(45deg)}
+  .s p{display:none}.s.open p{display:block}
+  .flow{padding:12px 14px}
+  .pane .tiers,.pane #vs,.pane #cmpSlot{margin-bottom:14px}
+}
+</style></head><body>
+<div class="wrap">
+  <div class="tabs" role="tablist">
+    <button class="on" data-t="price"><span class="l">Pricing and speed</span><span class="sh">Pricing</span></button>
+    <button data-t="sec"><span class="l">Data security and AI safety</span><span class="sh">Security</span></button>
+    <button data-t="faq"><span class="l">FAQ: spend reports and classification</span><span class="sh">FAQ</span></button>
+    <button data-t="cmp"><span class="sh">Compare</span></button>
+  </div>
+
+  <!-- PRICING -->
+  <section class="pane on" id="price">
+    <div class="head">
+      <div><h3>Fixed price. Fixed date. You own the result.</h3>
+        <div class="sub">Three ways to engage, each priced on the outcome and the calendar, not on billable days. Large firms staff a team and bill by the hour; here the AI agents do the heavy lifting and the price is set before we start.</div></div>
+      <span class="chip a"><i></i>10 business days to first report</span>
+    </div>
+    <div class="tiers">
+      <div class="tier" style="--g:var(--cyan)">
+        <div class="k">Sprint <span class="chip c">Fixed price</span></div>
+        <h4>Spend Report Sprint</h4>
+        <div class="for">For a CFO or CPO who needs a governed spend report from raw ERP extracts, fast.</div>
+        <div class="price">10 days<small>to your first report</small></div>
+        <div class="speed">One fixed fee, agreed before we start</div>
+        <details class="inc" open><summary>What is included</summary><ul>
+          <li>Vendor and spend classification into one governed taxonomy (UNSPSC or yours)</li>
+          <li>PO, non-PO, maverick, PPV, pay-on-time and supplier concentration views</li>
+          <li>AI agents dedupe vendors and flag miscoded spend for your approval</li>
+          <li>Executive readout with the top 10 savings and risk moves</li>
+        </ul></details>
+        <div class="own"><b>Guarantee:</b> first report on day 10 or the sprint is free.</div>
+      </div>
+      <div class="tier hot" style="--g:var(--primary)">
+        <div class="k">Subscription <span class="chip p"><i></i>Most chosen</span></div>
+        <h4>Azorian Subscription</h4>
+        <div class="for">For teams that want the tool live every month with forecasts and agents running.</div>
+        <div class="price">Monthly<small>cancel any month</small></div>
+        <div class="speed">Live in 3 weeks, one flat monthly fee</div>
+        <details class="inc" open><summary>What is included</summary><ul>
+          <li>Monthly refresh of classification, KPIs and the 24-metric matrix</li>
+          <li>Two-quarter spend forecast and company-wide cash forecast</li>
+          <li>Savings pipeline tracked from identified to P&amp;L verified</li>
+          <li>AI data-cleaning agents run continuously with human approval and audit log</li>
+        </ul></details>
+        <div class="own"><b>Included:</b> quarterly CFO and CPO review, unlimited users.</div>
+      </div>
+      <div class="tier" style="--g:var(--accent)">
+        <div class="k">Build <span class="chip a">Fixed scope</span></div>
+        <h4>Build and Integrate</h4>
+        <div class="for">For companies that want the Azorian report wired into their ERP and owned in house.</div>
+        <div class="price">8 weeks<small>to production</small></div>
+        <div class="speed">Fixed scope, fixed fee, you own the code</div>
+        <details class="inc" open><summary>What is included</summary><ul>
+          <li>Automated pipelines from SAP, Oracle or any ERP into one analytics layer</li>
+          <li>Source-to-Pay roadmap, operating model and control design</li>
+          <li>Zero-Touch AP and vendor master governance blueprints</li>
+          <li>Fractional procurement leadership available during rollout</li>
+        </ul></details>
+        <div class="own"><b>Optional:</b> success fee tied to realized, P&amp;L verified savings. You own the code and the data.</div>
+      </div>
+    </div>
+    <div class="drv" id="drv">
+      <h4>What sets the price <span class="chip p">Five drivers, one fixed number</span></h4>
+      <div class="lead">The fee is sized to your footprint, not to how many people a firm can staff. These five inputs set it, and it is agreed before work starts.</div>
+      <details class="inc" open><summary>The five drivers</summary>
+      <div class="dgrid">
+        <div class="d" style="--g:var(--primary)"><b>Annual spend</b><i>4 tiers</i><span>Under $100M, $100M to $500M, $500M to $2B, over $2B. More spend means more vendors, lines and categories to classify and govern.</span></div>
+        <div class="d" style="--g:var(--cyan)"><b>ERP instances</b><i>First one included</i><span>Each additional SAP, Oracle or other instance adds its own extraction, field mapping and reconciliation.</span></div>
+        <div class="d" style="--g:var(--tertiary)"><b>Business units</b><i>Up to 5 included</i><span>Each further block of five legal entities brings its own chart of accounts, approval flows and intercompany filtering.</span></div>
+        <div class="d" style="--g:var(--secondary)"><b>Data quality</b><i>Clean / moderate / poor</i><span>Scored in a free two-day data check. Free-text POs, no vendor master governance and mixed taxonomies move it up.</span></div>
+        <div class="d" style="--g:var(--accent)"><b>Scope</b><i>Flat add-ons</i><span>Multi-currency and multi-country, the company-wide cash forecast and the 24-KPI P2P matrix are each a flat add-on.</span></div>
+      </div>
+      </details>
+      <div class="note">Every engagement lands 30 to 50 percent under a large firm for the same output, fixed before we start. Bring your numbers to the free 45-minute discovery call and leave with the price.</div>
+
+      <!-- Live estimator. Kept offline: shown only when SHOW_ESTIMATOR is true (or ?est=1 for local review). Dollar figures never render otherwise. -->
+      <div class="est" id="est" hidden>
+        <h4>Estimate your price <span class="chip a"><i></i>Live</span></h4>
+        <div class="lead">Indicative, based on the five drivers above. The final figure is fixed after the two-day data check.</div>
+        <div class="egrid">
+          <div class="f"><label for="eSpend">Annual addressable spend</label><select id="eSpend"><option value="0">Under $100M</option><option value="1" selected>$100M to $500M</option><option value="2">$500M to $2B</option><option value="3">Over $2B</option></select></div>
+          <div class="f"><label for="eErp">ERP instances</label><select id="eErp"><option value="1" selected>1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6 or more</option></select></div>
+          <div class="f"><label for="eBu">Business units / legal entities</label><select id="eBu"><option value="5" selected>1 to 5</option><option value="10">6 to 10</option><option value="15">11 to 15</option><option value="20">16 to 20</option><option value="30">21 to 30</option><option value="50">More than 30</option></select></div>
+          <div class="f"><label for="eDq">Data quality</label><select id="eDq"><option value="0">Clean</option><option value="1" selected>Moderate</option><option value="2">Poor</option></select></div>
+        </div>
+        <div class="opts">
+          <label><input type="checkbox" id="eMulti"> Multi-currency / multi-country</label>
+          <label><input type="checkbox" id="eCash" checked> Company-wide cash forecast</label>
+          <label><input type="checkbox" id="eP2p" checked> 24-KPI P2P matrix</label>
+        </div>
+        <div class="eout">
+          <div class="eo" style="--g:var(--cyan)"><div class="k">Spend Report Sprint</div><div class="v" id="oSprint">$0<small>one time, 10 days</small></div><div class="m" id="oSprintM"></div></div>
+          <div class="eo" style="--g:var(--primary)"><div class="k">Subscription</div><div class="v" id="oSub">$0<small>per month, 12 months</small></div><div class="m" id="oSubM"></div></div>
+          <div class="eo" style="--g:var(--accent)"><div class="k">Savings realization</div><div class="v" id="oAdv">$0<small>per month</small></div><div class="m" id="oAdvM"></div></div>
+        </div>
+        <div class="note" id="oNote"></div>
+      </div>
+    </div>
+    <div class="vs" id="vs">
+      <h4>Why this beats the traditional consulting model <span class="chip o">Speed comparison</span></h4>
+      <details class="inc cmp" open><summary>Compare with a typical large firm</summary><table>
+        <thead><tr><th>Dimension</th><th>Azorian</th><th>Typical large firm</th></tr></thead>
+        <tbody>
+          <tr><td>First governed spend report</td><td class="us">10 business days</td><td class="them">10 to 16 weeks of discovery first</td></tr>
+          <tr><td>Pricing</td><td class="us">Fixed price, set before start</td><td class="them">Time and materials, teams of 4 to 8</td></tr>
+          <tr><td>Data cleaning</td><td class="us">AI agents, human approved, audit logged</td><td class="them">Offshore analysts in spreadsheets</td></tr>
+          <tr><td>Forecasting</td><td class="us">Spend and company cash forecast included</td><td class="them">Separate finance workstream</td></tr>
+          <tr><td>Who owns the result</td><td class="us">You do: code, model and data</td><td class="them">Licensed tool or slide deck</td></tr>
+          <tr><td>Who does the work</td><td class="us">The people who have run Source-to-Pay, supply chain and IT inside Fortune 500, PE-backed and mid-market companies. No handoff to juniors.</td><td class="them">Rotating junior staff</td></tr>
+        </tbody>
+      </table></details>
+      <div class="note">Every engagement is a fixed fee agreed before work starts, sized to your ERP footprint, annual spend and regulatory needs in a free 45-minute discovery call.</div>
+    </div>
+    <div class="cta"><div><b>Not sure which fits?</b><small>Send a note through the contact form below, or open the chat, and get a scoped proposal within two business days.</small></div><span class="chip a"><i></i>Free 45-minute discovery call</span></div>
+  </section>
+
+  <!-- COMPARE (mobile only: the comparison card is moved here on narrow screens) -->
+  <section class="pane" id="cmp">
+    <div id="cmpSlot"></div>
+    <div class="cta"><div><b>Not sure which fits?</b><small>Send a note through the contact form below, or open the chat, and get a scoped proposal within two business days.</small></div><span class="chip a"><i></i>Free 45-minute discovery call</span></div>
+  </section>
+
+  <!-- SECURITY -->
+  <section class="pane" id="sec">
+    <div class="head">
+      <div><h3>Your data never leaves the perimeter you approve.</h3>
+        <div class="sub">Security is designed in before the first file moves. These are the working protocols on every engagement, with private or on-premise deployment for regulated industries.</div></div>
+      <span class="chip c"><i></i>Human approval on every AI change</span>
+    </div>
+    <div class="sec">
+      <div class="s" style="--g:var(--cyan)"><span class="tag">Step 0</span><div class="ic"><svg viewBox="0 0 24 24"><path d="M6 3h9l5 5v13H6z"/><path d="M14 3v6h6"/><path d="M9 14h6M9 17h4"/></svg></div><h5>NDA before any data moves</h5><p>A signed NDA and a written data-handling plan come first. Scope, retention and deletion dates are agreed in writing.</p></div>
+      <div class="s" style="--g:var(--primary)"><span class="tag">Isolation</span><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></div><h5>Dedicated client sandbox</h5><p>Each client runs in its own isolated environment. No shared databases, no cross-client models, no commingled files.</p></div>
+      <div class="s" style="--g:var(--tertiary)"><span class="tag">Models</span><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><circle cx="12" cy="12" r="4"/></svg></div><h5>Private models by default</h5><p>Private, on-premise or hybrid model deployment. No client data goes to a public LLM without your written approval.</p></div>
+      <div class="s" style="--g:var(--accent)"><span class="tag">Infra</span><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><path d="M7 7h.01M7 17h.01"/></svg></div><h5>Dedicated server and firewall</h5><p>Options for a dedicated server behind your firewall, or a single-tenant US data center on Azure or AWS for regulated clients.</p></div>
+      <div class="s" style="--g:var(--secondary)"><span class="tag">Resilience</span><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5"/><path d="M20 12a8 8 0 0 1-14 5"/><path d="M18 3v4h-4M6 21v-4h4"/></svg></div><h5>Encrypted backups, written plan</h5><p>Encrypted backups in the cloud, on-premise or both, with a written backup and restore plan and tested recovery.</p></div>
+      <div class="s" style="--g:var(--cyan)"><span class="tag">Control</span><div class="ic"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div><h5>Human approval on every AI change</h5><p>Agents propose, people approve. Every merge, reclassification and rule change is held for review and written to an audit log.</p></div>
+      <div class="s" style="--g:var(--primary)"><span class="tag">Agents</span><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h5>Scoped agent permissions</h5><p>Least-privilege access for every agent, guardrails on what it may touch, and red-team testing before anything reaches production.</p></div>
+      <div class="s" style="--g:var(--tertiary)"><span class="tag">Governance</span><div class="ic"><svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="16" cy="16" r="3"/><path d="M11 8h10M3 16h10"/></svg></div><h5>Segregation of duties</h5><p>Controls designed in from day one: segregation of duties, access recertification and change approval that satisfy internal audit.</p></div>
+      <div class="s" style="--g:var(--accent)"><span class="tag">Compliance</span><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg></div><h5>Partner-supported compliance</h5><p>Where your industry requires HIPAA, CMMC, GDPR, FedRAMP or SOC 2 alignment, delivery runs with specialist partners to meet those controls.</p></div>
+    </div>
+    <div class="flow">
+      <h4>How an engagement moves, and where the controls sit</h4>
+      <div class="steps">
+        <div class="st"><b>01</b><span>NDA and scope</span><em>Data plan agreed</em></div>
+        <div class="st"><b>02</b><span>Sandbox built</span><em>Isolated, encrypted</em></div>
+        <div class="st"><b>03</b><span>Extract loaded</span><em>Your perimeter or ours</em></div>
+        <div class="st"><b>04</b><span>Agents propose</span><em>You approve, logged</em></div>
+        <div class="st"><b>05</b><span>Handover or delete</span><em>Certified on exit</em></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="pane" id="faq">
+    <div class="head">
+      <div><h3>Questions people ask about spend reports and vendor classification</h3>
+        <div class="sub">Short answers from fifteen years of building procurement reporting across SAP, Oracle and dozens of ERPs.</div></div>
+      <span class="chip p"><i></i>Ask anything in the chat</span>
+    </div>
+    <div class="faq">
+      <details open><summary>What should a spend report include?</summary><p>Total spend by category, supplier and business unit; PO versus non-PO and maverick spend; purchase price variance; payment terms and pay-on-time; supplier concentration and single-source exposure; and a savings pipeline from identified to realized. A good spend report also carries a forward view: a two-quarter spend forecast and a cash forecast so it drives decisions instead of describing last quarter.</p></details>
+      <details><summary>How do you classify vendors and spend?</summary><p>Every vendor and line item is mapped into one governed taxonomy, usually UNSPSC or a company-specific category tree, using AI classification agents trained on your invoice text, GL accounts and material groups. Duplicate vendors are merged, miscoded spend is reclassified, and every change is held for a human to approve so the taxonomy stays auditable.</p></details>
+      <details><summary>What is spend under management and why does it matter?</summary><p>Spend under management is the share of total spend that procurement actively sources, contracts or controls. World-class organizations run above 85 percent. Every point below that is spend where nobody negotiated the price, checked the supplier or captured the terms, which is why it is the first KPI on the Azorian report.</p></details>
+      <details><summary>What is the difference between a spend report and a procurement report?</summary><p>A spend report shows where the money went. A procurement report adds how it got there: PO compliance, cycle times, contract coverage, first-time match and touchless invoice rates, supplier risk and savings realization. Azorian combines both so procurement, finance and operations argue about the same numbers.</p></details>
+      <details><summary>How is a cash forecast different from a spend forecast?</summary><p>A spend forecast projects what will be committed and invoiced by category over the next two quarters. A cash forecast projects when money actually leaves the bank, by week, across supplier payables, payroll, tax, debt and CAPEX. Doing both from the same data is what lets a company plan liquidity and negotiate payment terms with confidence.</p></details>
+      <details><summary>What is maverick spend and how do you reduce it?</summary><p>Maverick spend is purchasing outside approved contracts, catalogs or purchase orders. The report isolates it by category, requester and supplier, then the fixes are process design: PO-first policy, guided buying, catalog coverage and contract compliance tracking, with AI agents flagging new off-contract vendors as they appear.</p></details>
+      <details><summary>How fast can you deliver a first spend report?</summary><p>Ten business days from receiving an ERP extract for a single instance. The AI agents do classification and cleansing in hours; the time goes into validating the taxonomy with your team and building the executive readout. If the first report is not delivered on day ten, the sprint is free.</p></details>
+      <details><summary>Which ERPs and tools do you work with?</summary><p>SAP ECC and S/4HANA, Oracle, Coupa, JAGGAER, SAP Ariba, PeopleSoft and ServiceNow, with invoice automation on OpenText VIM and Kofax. Output lands in Power BI, Tableau, Spotfire or the browser-based Azorian report shown above.</p></details>
+    </div>
+    <div class="kw"><span>spend report</span><span>procurement reporting</span><span>vendor classification</span><span>spend classification</span><span>spend taxonomy</span><span>UNSPSC</span><span>spend under management</span><span>maverick spend</span><span>cash forecast</span><span>spend forecast</span><span>vendor master cleansing</span><span>Source-to-Pay KPIs</span><span>procure-to-pay analytics</span><span>zero-touch AP</span></div>
+  </section>
+</div>
+<script>
+document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.id===b.dataset.t));
+  window.scrollTo(0,0);
+}));
+(function(){
+  var mq=window.matchMedia('(max-width:560px)'),touched=false;
+  var vs=document.getElementById('vs'),slot=document.getElementById('cmpSlot'),priceHome=vs.parentNode,priceNext=vs.nextSibling;
+  function place(){
+    if(mq.matches){slot.appendChild(vs);vs.querySelector('details.cmp').open=true;}
+    else{priceHome.insertBefore(vs,priceNext);}
+    if(!mq.matches){var on=document.querySelector('.tabs button.on');if(on&&on.dataset.t==='cmp')document.querySelector('.tabs button[data-t=price]').click();}
+  }
+  function apply(){
+    place();
+    if(touched)return;
+    document.querySelectorAll('details.inc').forEach(function(d){d.open=!mq.matches||d.classList.contains('cmp');});
+  }
+  apply();mq.addEventListener?mq.addEventListener('change',apply):mq.addListener(apply);
+  // accordion behaviour: one open item per group
+  function one(sel,attr){
+    document.querySelectorAll(sel).forEach(function(d){
+      d.addEventListener('toggle',function(){
+        if(!d.open)return;
+        var grp=d.closest('.pane');
+        grp.querySelectorAll(sel).forEach(function(o){if(o!==d&&o.open&&(attr||mq.matches))o.open=false;});
+      });
+    });
+  }
+  one('details.inc:not(.cmp)',false);
+  one('.faq>details',true);
+  document.querySelectorAll('details.inc>summary').forEach(function(s){s.addEventListener('click',function(){touched=true;});});
+  document.querySelectorAll('.s').forEach(function(c){c.addEventListener('click',function(){
+    if(!mq.matches)return;
+    var open=c.classList.contains('open');
+    document.querySelectorAll('.s.open').forEach(function(o){o.classList.remove('open');});
+    if(!open)c.classList.add('open');
+  });});
+})();
+/* ---- price estimator (offline by default) ---- */
+(function(){
+  var SHOW_ESTIMATOR=false; // flip to true to show public figures
+  var local=false;try{local=/[?&]est=1/.test(location.search)}catch(e){}
+  var est=document.getElementById('est');if(!est)return;
+  if(!(SHOW_ESTIMATOR||local))return;
+  est.hidden=false;
+  // internal model: base x spend tier x data quality + flat adders; subscription and advisory by tier
+  var TIER=[.8,1,1.4,1.9],DQ=[1,1.15,1.35],SUB=[3500,6000,10000,15000],ADV_LO=[12000,15000,20000,26000],ADV_HI=[18000,22000,28000,30000];
+  var BASE=18000,ERP_ONE=6000,ERP_MO=750,BU_BLOCK=4000,MULTI=.10,CASH=5000,P2P=5000;
+  var $=function(id){return document.getElementById(id)};
+  var r500=function(v){return Math.round(v/500)*500};
+  var usd=function(v){return '$'+r500(v).toLocaleString('en-US')};
+  var usdK=function(v){return '$'+Math.round(v/1000)+'k'};
+  function calc(){
+    var t=+$('eSpend').value,erp=+$('eErp').value,bu=+$('eBu').value,dq=+$('eDq').value;
+    var multi=$('eMulti').checked,cash=$('eCash').checked,p2p=$('eP2p').checked;
+    var extraErp=Math.max(0,erp-1),buBlocks=Math.max(0,Math.ceil((bu-5)/5));
+    var core=BASE*TIER[t]*DQ[dq];
+    var sprint=core*(multi?1+MULTI:1)+extraErp*ERP_ONE+buBlocks*BU_BLOCK+(cash?CASH:0)+(p2p?P2P:0);
+    var sub=(SUB[t]+extraErp*ERP_MO)*(multi?1+MULTI:1);
+    var lo=ADV_LO[t],hi=ADV_HI[t];
+    $('oSprint').innerHTML=usd(sprint)+'<small>one time, 10 business days</small>';
+    $('oSprintM').textContent='Core '+usd(core)+(extraErp?' + '+extraErp+' extra ERP':'')+(buBlocks?' + '+buBlocks+' BU block'+(buBlocks>1?'s':''):'')+(multi?' + multi-country':'')+(cash?' + cash forecast':'')+(p2p?' + P2P matrix':'')+'. Day 10 or it is free.';
+    $('oSub').innerHTML=usd(sub)+'<small>per month, 12-month term</small>';
+    $('oSubM').textContent='Monthly refresh, forecasts, agents, unlimited users. '+usdK(sub*12)+' a year; software-only tools in this class run '+usdK(60000+t*30000)+' to '+usdK(150000+t*50000)+' with no P2P people attached.';
+    $('oAdv').innerHTML=usdK(lo)+' to '+usdK(hi)+'<small>per month retainer</small>';
+    $('oAdvM').textContent='Or a gainshare: 10% of P&L-verified realized savings in year one, '+usdK(20000)+' floor, capped at 3x the retainer.';
+    $('oNote').textContent='Build and Integrate is scoped separately after discovery as a fixed fee. Large firms typically quote '+usdK(200000)+' to '+usdK(500000)+' over 8 to 12 weeks for the diagnostic alone.';
+  }
+  ['eSpend','eErp','eBu','eDq','eMulti','eCash','eP2p'].forEach(function(id){$(id).addEventListener('change',calc)});
+  calc();
+})();
+</script>
+</body></html>
